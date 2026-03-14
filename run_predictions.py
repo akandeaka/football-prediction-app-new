@@ -4,7 +4,7 @@ from datetime import datetime
 import json
 
 # ⚠️ REPLACE THIS WITH YOUR API KEY
-API_KEY = "YOUR_API_KEY_HERE"
+API_KEY = "5fa07bc20ebdb76e4fb2833142a5c207"
 
 def extract_odds(odds_data):
     """Extract home/draw/away odds from API response"""
