@@ -1,137 +1,107 @@
 from prediction_engine import FootballPredictionEngine
-from api_connector import FootballAPI
+from demo_data import get_demo_fixtures, get_demo_team_stats, get_demo_h2h
 from datetime import datetime
-import json
 
-# ⚠️ REPLACE THIS WITH YOUR API KEY
-API_KEY = "5fa07bc20ebdb76e4fb2833142a5c207"
+# Set to True to use demo data, False to use real API
+USE_DEMO_MODE = True
 
-def extract_odds(odds_data):
-    """Extract home/draw/away odds from API response"""
-    if not odds_data:
-        return None
-    
-    bookmaker = odds_data[0].get('bookmakers', [{}])[0]
-    bets = bookmaker.get('bets', [])
-    
-    for bet in bets:
-        if bet.get('name') == 'Match Winner':
-            values = {v['value']: v['odd'] for v in bet.get('values', [])}
-            return {
-                'home': float(values.get('Home', 0)),
-                'draw': float(values.get('Draw', 0)),
-                'away': float(values.get('Away', 0))
-            }
+# ⚠️ API Key (only used if USE_DEMO_MODE = False)
+API_KEY = "YOUR_API_KEY_HERE"
+
+def extract_odds(match):
+    """Extract odds from match object"""
+    if 'odds' in match and match['odds']:
+        return match['odds']
     return None
-
-def calculate_team_form(team_id, api):
-    """Calculate over 1.5 goals in last 10 matches"""
-    # This is a simplified version - you'd need to fetch actual match history
-    # For now, return a placeholder
-    return {'away_over_1_5_last_10': 5}
-
-def calculate_h2h_stats(h2h_matches):
-    """Calculate H2H statistics"""
-    total = len(h2h_matches)
-    if total == 0:
-        return {'total_matches': 0, 'ht_under_1_5_count': 0}
-    
-    ht_under_1_5 = 0
-    for match in h2h_matches:
-        goals = match['goals']
-        ht_goals = goals.get('halftime', 0)
-        if isinstance(ht_goals, int) and ht_goals < 2:
-            ht_under_1_5 += 1
-    
-    return {
-        'total_matches': total,
-        'ht_under_1_5_count': ht_under_1_5
-    }
 
 def run_daily_predictions():
     """Main function to run predictions"""
-    print("=" * 50)
-    print("FOOTBALL PREDICTION ENGINE - LIVE MODE")
-    print("=" * 50)
+    print("=" * 60)
+    print("⚽ FOOTBALL PREDICTION ENGINE")
+    print("=" * 60)
+    print(f"Mode: {'🎮 DEMO' if USE_DEMO_MODE else '🌐 LIVE API'}")
     print(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("=" * 50)
+    print("=" * 60)
     
-    if API_KEY == "YOUR_API_KEY_HERE":
-        print("❌ ERROR: Please add your API key in run_predictions.py")
-        print("Get your key from: https://api-football.com")
-        return
-    
-    # Initialize
-    api = FootballAPI(API_KEY)
     engine = FootballPredictionEngine()
     
-    # Get today's fixtures
-    print("\n📅 Fetching upcoming matches...")
-    fixtures = api.get_fixtures()
+    # Get fixtures
+    if USE_DEMO_MODE:
+        print("\n📊 Loading demo matches...")
+        fixtures = get_demo_fixtures()
+    else:
+        print("\n🌐 Fetching from API...")
+        # API code would go here
+        fixtures = []
     
     if not fixtures:
-        print("❌ No fixtures found or API error")
+        print("❌ No matches found")
         return
     
-    print(f"✅ Found {len(fixtures)} upcoming matches\n")
+    print(f"✅ Found {len(fixtures)} matches\n")
     
     predictions_count = 0
+    rule_stats = {}
     
-    # Process each match
-    for fixture in fixtures[:20]:  # Limit to first 20 for testing
-        match_name = f"{fixture['teams']['home']['name']} vs {fixture['teams']['away']['name']}"
-        fixture_id = fixture['fixture']['id']
+    for match in fixtures:
+        home = match['homeTeam']['name']
+        away = match['awayTeam']['name']
+        competition = match.get('competition', {}).get('name', 'Unknown')
         
-        print(f"Analyzing: {match_name}")
+        match_name = f"{home} vs {away}"
+        
+        print(f"🔍 Analyzing: {match_name}")
+        print(f"   League: {competition}")
         
         # Get odds
-        odds_data = api.get_odds(fixture_id)
-        odds = extract_odds(odds_data)
+        odds = extract_odds(match)
+        if odds:
+            print(f"   Odds: H-{odds['home']:.2f} | D-{odds['draw']:.2f} | A-{odds['away']:.2f}")
         
-        if not odds:
-            print("  ⚠️  No odds available, skipping...")
-            continue
-        
-        print(f"  Odds: H-{odds['home']} | D-{odds['draw']} | A-{odds['away']}")
-        
-        # Get team stats (simplified)
-        team_stats = calculate_team_form(
-            fixture['teams']['away']['id'], 
-            api
-        )
-        
-        # Get H2H stats
-        h2h_matches = api.get_h2h(
-            fixture['teams']['home']['id'],
-            fixture['teams']['away']['id'],
-            last=10
-        )
-        h2h_stats = calculate_h2h_stats(h2h_matches)
+        # Get stats (demo mode)
+        team_stats = match.get('team_stats') or get_demo_team_stats(match['awayTeam']['id'])
+        h2h_stats = match.get('h2h_stats') or get_demo_h2h(match['homeTeam']['id'], match['awayTeam']['id'])
         
         # Prepare match data
         match_data = {
             'name': match_name,
-            'odds': odds,
+            'odds': odds or {'home': 2.0, 'draw': 3.5, 'away': 3.5},
             'team_stats': team_stats,
             'h2h_stats': h2h_stats
         }
         
-        # Run predictions
+        # Run prediction engine
         predictions = engine.process_match(match_data)
         
         if predictions:
-            print("  ✅ PREDICTIONS FOUND:")
+            print("   ✅ PREDICTIONS:")
             for p in predictions:
-                print(f"     🎯 {p['rule']}: {p['market']} ({p['confidence']})")
+                rule = p['rule']
+                rule_stats[rule] = rule_stats.get(rule, 0) + 1
+                print(f"      🎯 {rule}: {p['market']} ({p['confidence']})")
             predictions_count += 1
         else:
-            print("  ❌ No predictions matched")
+            print("   ❌ No predictions matched")
         
-        print("-" * 50)
+        print("   " + "-" * 50)
     
-    print("\n" + "=" * 50)
-    print(f"SUMMARY: {predictions_count} predictions found from {len(fixtures[:20])} matches")
-    print("=" * 50)
+    # Summary
+    print("\n" + "=" * 60)
+    print("📈 SUMMARY")
+    print("=" * 60)
+    print(f"Total matches analyzed: {len(fixtures)}")
+    print(f"Predictions found: {predictions_count}")
+    print(f"Match rate: {predictions_count/len(fixtures)*100:.1f}%")
+    
+    if rule_stats:
+        print("\n📊 By Rule:")
+        for rule, count in sorted(rule_stats.items()):
+            print(f"   {rule}: {count} predictions")
+    
+    print("=" * 60)
+    print("✅ Demo test complete!")
+    print("💡 Tip: Set USE_DEMO_MODE = False to connect real API later")
+    print("=" * 60)
 
 if __name__ == "__main__":
     run_daily_predictions()
