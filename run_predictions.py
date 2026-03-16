@@ -1,4 +1,5 @@
 from prediction_engine import FootballPredictionEngine
+from results_tracker import ResultsTracker
 from datetime import datetime
 
 USE_DEMO_MODE = True
@@ -34,6 +35,7 @@ def run_daily_predictions():
     print("=" * 60)
     
     engine = FootballPredictionEngine()
+    tracker = ResultsTracker()
     fixtures = get_demo_fixtures()
     
     print(f"\nFound {len(fixtures)} matches\n")
@@ -66,6 +68,13 @@ def run_daily_predictions():
             print("  PREDICTIONS FOUND:")
             for p in predictions:
                 print(f"    - {p['rule']}: {p['market']}")
+                # Save to tracker
+                tracker.save_prediction(
+                    match_name=match_name,
+                    rule=p['rule'],
+                    market=p['market'],
+                    odds=odds.get('home', 2.0)
+                )
             predictions_count += 1
         else:
             print("  No predictions matched")
@@ -73,6 +82,9 @@ def run_daily_predictions():
     
     print(f"\nSUMMARY: {predictions_count}/{len(fixtures)} matches matched")
     print("=" * 60)
+    
+    # Show tracker report
+    tracker.print_report()
 
 if __name__ == "__main__":
     run_daily_predictions()
