@@ -37,7 +37,7 @@ class FootballPredictionEngine:
 
     def check_rule_5(self, match, h2h_stats):
         """Rule 5: H2H First Half Under 1.5 Goals probability 22% - 33%"""
-        if h2h_stats['total_matches'] < 5:
+        if h2h_stats['total_matches'] < 10:
             return {"status": "FAIL", "reason": "Insufficient H2H Data"}
         ht_under_1_5_count = h2h_stats['ht_under_1_5_count']
         total = h2h_stats['total_matches']
@@ -49,38 +49,18 @@ class FootballPredictionEngine:
     def process_match(self, match_data):
         results = []
         r1 = self.check_rule_1(match_data)
-        if r1['status'] == "PASS": results.append(r1)
+        if r1['status'] == "PASS":
+            results.append(r1)
         r2 = self.check_rule_2(match_data)
-        if r2['status'] == "PASS": results.append(r2)
+        if r2['status'] == "PASS":
+            results.append(r2)
         r3 = self.check_rule_3(match_data)
-        if r3['status'] == "PASS": results.append(r3)
+        if r3['status'] == "PASS":
+            results.append(r3)
         r4 = self.check_rule_4(match_data, match_data['team_stats'])
-        if r4['status'] == "PASS": results.append(r4)
+        if r4['status'] == "PASS":
+            results.append(r4)
         r5 = self.check_rule_5(match_data, match_data['h2h_stats'])
-        if r5['status'] == "PASS": results.append(r5)
+        if r5['status'] == "PASS":
+            results.append(r5)
         return results
-
-if __name__ == "__main__":
-    # Test Data
-    matches = [
-        {"name": "Man City vs Luton", "odds": {"home": 1.22, "draw": 6.50, "away": 11.00}, "team_stats": {"away_over_1_5_last_10": 5}, "h2h_stats": {"total_matches": 5, "ht_under_1_5_count": 2}},
-        {"name": "Bayern vs Darmstadt", "odds": {"home": 1.32, "draw": 5.00, "away": 13.00}, "team_stats": {"away_over_1_5_last_10": 4}, "h2h_stats": {"total_matches": 2, "ht_under_1_5_count": 1}},
-        {"name": "Liverpool vs Chelsea", "odds": {"home": 1.95, "draw": 3.80, "away": 3.90}, "team_stats": {"away_over_1_5_last_10": 7}, "h2h_stats": {"total_matches": 10, "ht_under_1_5_count": 5}},
-        {"name": "Wolves vs Aston Villa", "odds": {"home": 2.10, "draw": 3.50, "away": 1.80}, "team_stats": {"away_over_1_5_last_10": 9}, "h2h_stats": {"total_matches": 10, "ht_under_1_5_count": 3}},
-        {"name": "Everton vs Fulham", "odds": {"home": 2.50, "draw": 3.20, "away": 2.80}, "team_stats": {"away_over_1_5_last_10": 5}, "h2h_stats": {"total_matches": 10, "ht_under_1_5_count": 3}},
-        {"name": "Arsenal vs Spurs", "odds": {"home": 1.50, "draw": 4.00, "away": 6.00}, "team_stats": {"away_over_1_5_last_10": 5}, "h2h_stats": {"total_matches": 10, "ht_under_1_5_count": 5}}
-    ]
-
-    engine = FootballPredictionEngine()
-    print("--- STARTING PREDICTION TEST ---\n")
-    for match in matches:
-        print(f"Analyzing: {match['name']}")
-        predictions = engine.process_match(match)
-        if len(predictions) > 0:
-            print("✅ PREDICTIONS FOUND:")
-            for p in predictions:
-                print(f"   - {p['rule']}: {p['market']} ({p['confidence']})")
-        else:
-            print("❌ No predictions matched.")
-        print("-" * 30)
-    print("\n--- TEST COMPLETE ---")
