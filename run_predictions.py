@@ -60,6 +60,7 @@ def run_daily_predictions():
             print("  PREDICTIONS FOUND:")
             for p in predictions:
                 print(f"    - {p['rule']}: {p['market']}")
+                # THIS LINE SAVES TO JSON - MAKE SURE IT EXISTS
                 tracker.save_prediction(
                     match_name=match_name,
                     rule=p['rule'],
