@@ -6,7 +6,7 @@ from real_matches import get_real_fixtures
 
 app = Flask(__name__)
 
-# ===== BEAUTIFUL HTML TEMPLATE =====
+# ===== COMPLETE HTML TEMPLATE =====
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -23,8 +23,6 @@ HTML_TEMPLATE = """
             padding: 20px;
         }
         .container { max-width: 1200px; margin: 0 auto; }
-        
-        /* Header */
         .header { 
             background: white; 
             padding: 30px; 
@@ -33,11 +31,7 @@ HTML_TEMPLATE = """
             margin-bottom: 30px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
-        .header h1 { 
-            color: #1a73e8; 
-            font-size: 2.5em; 
-            margin-bottom: 10px;
-        }
+        .header h1 { color: #1a73e8; font-size: 2.5em; margin-bottom: 10px; }
         .header p { color: #666; font-size: 1.1em; }
         .date { 
             background: #e8f0fe; 
@@ -48,8 +42,6 @@ HTML_TEMPLATE = """
             color: #1a73e8;
             font-weight: 600;
         }
-        
-        /* Stats Cards */
         .stats-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
@@ -70,8 +62,6 @@ HTML_TEMPLATE = """
             margin-bottom: 5px;
         }
         .stat-label { color: #666; font-size: 0.9em; }
-        
-        /* Matches Section */
         .section-title { 
             color: white; 
             font-size: 1.8em; 
@@ -79,17 +69,13 @@ HTML_TEMPLATE = """
             text-align: center;
             text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        
         .match-card { 
             background: white; 
             border-radius: 15px; 
             padding: 25px; 
             margin-bottom: 20px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
         }
-        .match-card:hover { transform: translateY(-5px); }
-        
         .match-header { 
             display: flex; 
             justify-content: space-between; 
@@ -98,11 +84,7 @@ HTML_TEMPLATE = """
             padding-bottom: 15px;
             border-bottom: 2px solid #f0f0f0;
         }
-        .match-teams { 
-            font-size: 1.4em; 
-            font-weight: bold; 
-            color: #333;
-        }
+        .match-teams { font-size: 1.4em; font-weight: bold; color: #333; }
         .match-league { 
             background: #e8f0fe; 
             color: #1a73e8; 
@@ -111,12 +93,7 @@ HTML_TEMPLATE = """
             font-size: 0.85em;
             font-weight: 600;
         }
-        
-        .odds-display { 
-            display: flex; 
-            gap: 15px; 
-            margin-bottom: 20px;
-        }
+        .odds-display { display: flex; gap: 15px; margin-bottom: 20px; }
         .odd-box { 
             flex: 1; 
             background: #f8f9fa; 
@@ -125,31 +102,14 @@ HTML_TEMPLATE = """
             text-align: center;
         }
         .odd-label { color: #666; font-size: 0.85em; margin-bottom: 5px; }
-        .odd-value { 
-            font-size: 1.3em; 
-            font-weight: bold; 
-            color: #1a73e8;
-        }
-        
-        .predictions-section { 
-            background: #f8f9fa; 
-            padding: 20px; 
-            border-radius: 10px;
-        }
+        .odd-value { font-size: 1.3em; font-weight: bold; color: #1a73e8; }
+        .predictions-section { background: #f8f9fa; padding: 20px; border-radius: 10px; }
         .predictions-title { 
             font-size: 1.1em; 
             font-weight: 600; 
             color: #333; 
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
-        .predictions-title::before { 
-            content: "🎯"; 
-            font-size: 1.3em;
-        }
-        
         .prediction-item { 
             background: white; 
             padding: 15px; 
@@ -163,15 +123,9 @@ HTML_TEMPLATE = """
         .prediction-item.high-confidence { border-left-color: #34a853; }
         .prediction-item.medium-confidence { border-left-color: #f9a825; }
         .prediction-item.low-confidence { border-left-color: #ea4335; }
-        
         .prediction-info { flex: 1; }
-        .prediction-rule { 
-            font-weight: 600; 
-            color: #1a73e8; 
-            margin-bottom: 5px;
-        }
+        .prediction-rule { font-weight: 600; color: #1a73e8; margin-bottom: 5px; }
         .prediction-market { color: #666; font-size: 0.95em; }
-        
         .prediction-odds { 
             background: #e8f0fe; 
             padding: 8px 15px; 
@@ -189,7 +143,6 @@ HTML_TEMPLATE = """
         .confidence-high { background: #e6f4ea; color: #34a853; }
         .confidence-medium { background: #fef7e0; color: #f9a825; }
         .confidence-low { background: #fce8e6; color: #ea4335; }
-        
         .no-predictions { 
             background: #fff3cd; 
             padding: 15px; 
@@ -197,8 +150,6 @@ HTML_TEMPLATE = """
             color: #856404;
             text-align: center;
         }
-        
-        /* Rules Info Section */
         .rules-section { 
             background: white; 
             padding: 30px; 
@@ -206,12 +157,7 @@ HTML_TEMPLATE = """
             margin-top: 30px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
-        .rules-title { 
-            font-size: 1.5em; 
-            color: #333; 
-            margin-bottom: 20px;
-            text-align: center;
-        }
+        .rules-title { font-size: 1.5em; color: #333; margin-bottom: 20px; text-align: center; }
         .rules-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
@@ -223,11 +169,7 @@ HTML_TEMPLATE = """
             border-radius: 10px;
             border-left: 4px solid #1a73e8;
         }
-        .rule-name { 
-            font-weight: 600; 
-            color: #1a73e8; 
-            margin-bottom: 5px;
-        }
+        .rule-name { font-weight: 600; color: #1a73e8; margin-bottom: 5px; }
         .rule-desc { color: #666; font-size: 0.9em; }
         .rule-market { 
             background: #e8f0fe; 
@@ -238,8 +180,6 @@ HTML_TEMPLATE = """
             color: #1a73e8;
             margin-top: 8px;
         }
-        
-        /* Footer */
         .footer { 
             text-align: center; 
             color: white; 
@@ -248,22 +188,7 @@ HTML_TEMPLATE = """
             opacity: 0.9;
         }
         .footer a { color: white; text-decoration: underline; }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .header h1 { font-size: 1.8em; }
-            .match-teams { font-size: 1.1em; }
-            .odds-display { flex-direction: column; }
-            .prediction-item { flex-direction: column; gap: 10px; text-align: center; }
-        }
-        
-        /* Loading Animation */
-        .loading { 
-            text-align: center; 
-            padding: 50px; 
-            color: white; 
-            font-size: 1.2em;
-        }
+        .loading { text-align: center; padding: 50px; color: white; font-size: 1.2em; }
         .spinner { 
             border: 4px solid #f3f3f3; 
             border-top: 4px solid #1a73e8; 
@@ -274,18 +199,22 @@ HTML_TEMPLATE = """
             margin: 20px auto;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.8em; }
+            .match-teams { font-size: 1.1em; }
+            .odds-display { flex-direction: column; }
+            .prediction-item { flex-direction: column; gap: 10px; text-align: center; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>⚽ Football Prediction Engine</h1>
             <p>AI-Powered Match Predictions Using 7 Custom Rules</p>
             <div class="date" id="currentDate"></div>
         </div>
         
-        <!-- Stats Cards -->
         <div class="stats-grid" id="statsGrid">
             <div class="stat-card">
                 <div class="stat-value" id="totalMatches">0</div>
@@ -305,7 +234,6 @@ HTML_TEMPLATE = """
             </div>
         </div>
         
-        <!-- Matches Section -->
         <h2 class="section-title">📅 Today's Matches & Predictions</h2>
         <div id="matchesContainer">
             <div class="loading">
@@ -314,13 +242,19 @@ HTML_TEMPLATE = """
             </div>
         </div>
         
-        <!-- Rules Info Section -->
+        <h2 class="section-title">📊 Previous Matches & Results</h2>
+        <div id="previousMatchesContainer">
+            <div class="loading">
+                <div class="spinner"></div>
+                Loading previous matches...
+            </div>
+        </div>
+        
         <div class="rules-section">
             <h2 class="rules-title">📋 Our 7 Prediction Rules</h2>
             <div class="rules-grid" id="rulesGrid"></div>
         </div>
         
-        <!-- Footer -->
         <div class="footer">
             <p>⚠️ <strong>Disclaimer:</strong> This is a prediction tool, not a guarantee. Football matches are unpredictable.</p>
             <p>Always bet responsibly. Never bet more than you can afford to lose.</p>
@@ -329,12 +263,10 @@ HTML_TEMPLATE = """
     </div>
     
     <script>
-        // Set current date
         document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
         
-        // Load data from API
         async function loadData() {
             try {
                 const [predRes, statsRes, rulesRes] = await Promise.all([
@@ -347,7 +279,6 @@ HTML_TEMPLATE = """
                 const stats = await statsRes.json();
                 const rules = await rulesRes.json();
                 
-                // Update stats
                 if (stats.success) {
                     document.getElementById('totalMatches').textContent = stats.total || 0;
                     document.getElementById('totalPredictions').textContent = predictions.count || 0;
@@ -355,19 +286,22 @@ HTML_TEMPLATE = """
                     document.getElementById('totalProfit').textContent = '$' + (stats.total_profit || 0).toFixed(2);
                 }
                 
-                // Display matches with predictions
                 displayMatches(predictions);
-                
-                // Display rules
                 displayRules(rules);
-                
             } catch (error) {
-                console.error('Error loading ', error);
-                document.getElementById('matchesContainer').innerHTML = `
-                    <div class="no-predictions">
-                        ⚠️ Error loading predictions. Please try again later.
-                    </div>
-                `;
+                console.error('Error loading data:', error);
+                document.getElementById('matchesContainer').innerHTML = 
+                    '<div class="no-predictions">⚠️ Error loading predictions. Please try again later.</div>';
+            }
+        }
+        
+        async function loadPreviousMatches() {
+            try {
+                const response = await fetch('/api/previous-matches');
+                const data = await response.json();
+                displayPreviousMatches(data);
+            } catch (error) {
+                console.error('Error loading previous matches:', error);
             }
         }
         
@@ -375,15 +309,11 @@ HTML_TEMPLATE = """
             const container = document.getElementById('matchesContainer');
             
             if (!data.success || !data.predictions || data.predictions.length === 0) {
-                container.innerHTML = `
-                    <div class="no-predictions">
-                        📭 No predictions available at the moment. Check back later!
-                    </div>
-                `;
+                container.innerHTML = 
+                    '<div class="no-predictions">📭 No predictions available at the moment. Check back later!</div>';
                 return;
             }
             
-            // Group predictions by match
             const matchGroups = {};
             data.predictions.forEach(p => {
                 if (!matchGroups[p.match]) {
@@ -399,47 +329,90 @@ HTML_TEMPLATE = """
             
             let html = '';
             Object.values(matchGroups).forEach(match => {
-                html += `
-                    <div class="match-card">
-                        <div class="match-header">
-                            <div class="match-teams">${match.match}</div>
-                            <div class="match-league">${match.league}</div>
-                        </div>
+                html += '<div class="match-card">';
+                html += '<div class="match-header">';
+                html += '<div class="match-teams">' + match.match + '</div>';
+                html += '<div class="match-league">' + match.league + '</div>';
+                html += '</div>';
+                
+                html += '<div class="odds-display">';
+                html += '<div class="odd-box"><div class="odd-label">Home Win</div><div class="odd-value">' + (match.odds.home || '-') + '</div></div>';
+                html += '<div class="odd-box"><div class="odd-label">Draw</div><div class="odd-value">' + (match.odds.draw || '-') + '</div></div>';
+                html += '<div class="odd-box"><div class="odd-label">Away Win</div><div class="odd-value">' + (match.odds.away || '-') + '</div></div>';
+                html += '</div>';
+                
+                html += '<div class="predictions-section">';
+                html += '<div class="predictions-title">Predictions (' + match.predictions.length + ')</div>';
+                
+                match.predictions.forEach(p => {
+                    const confClass = p.confidence === 'High' ? 'high-confidence' : p.confidence === 'Medium' ? 'medium-confidence' : 'low-confidence';
+                    const confBadge = p.confidence === 'High' ? 'high' : p.confidence === 'Medium' ? 'medium' : 'low';
+                    html += '<div class="prediction-item ' + confClass + '">';
+                    html += '<div class="prediction-info">';
+                    html += '<div class="prediction-rule">' + p.rule + '</div>';
+                    html += '<div class="prediction-market">' + p.market + '</div>';
+                    html += '</div>';
+                    html += '<div style="display:flex;align-items:center;gap:10px;">';
+                    html += '<div class="prediction-odds">' + p.odds + '</div>';
+                    html += '<div class="prediction-confidence confidence-' + confBadge + '">' + p.confidence + '</div>';
+                    html += '</div></div>';
+                });
+                
+                html += '</div></div>';
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function displayPreviousMatches(data) {
+            const container = document.getElementById('previousMatchesContainer');
+            
+            if (!data.success || !data.matches || data.matches.length === 0) {
+                container.innerHTML = 
+                    '<div class="no-predictions">📭 No previous matches recorded yet.</div>';
+                return;
+            }
+            
+            let html = '';
+            html += '<div class="stats-grid" style="margin-bottom: 20px;">';
+            html += '<div class="stat-card"><div class="stat-value">' + data.count + '</div><div class="stat-label">Matches</div></div>';
+            html += '<div class="stat-card"><div class="stat-value">' + data.total_predictions + '</div><div class="stat-label">Predictions</div></div>';
+            html += '<div class="stat-card"><div class="stat-value">' + data.wins + '</div><div class="stat-label">Wins</div></div>';
+            html += '<div class="stat-card"><div class="stat-value">' + data.win_rate.toFixed(1) + '%</div><div class="stat-label">Win Rate</div></div>';
+            html += '</div>';
+            
+            data.matches.forEach(match => {
+                const resultEmoji = match.result === '1' ? '✅' : match.result === 'X' ? '🤝' : '❌';
+                const score = (match.home_goals || 0) + '-' + (match.away_goals || 0);
+                
+                html += '<div class="match-card">';
+                html += '<div class="match-header">';
+                html += '<div class="match-teams">' + match.home + ' ' + resultEmoji + ' ' + score + ' ' + match.away + '</div>';
+                html += '<div class="match-league">' + match.league + '</div>';
+                html += '</div>';
+                
+                if (match.predictions && match.predictions.length > 0) {
+                    html += '<div style="margin-top: 15px;">';
+                    html += '<div style="font-weight: 600; color: #1a73e8; margin-bottom: 10px;">Predictions:</div>';
+                    
+                    match.predictions.forEach(p => {
+                        const statusClass = p.status === 'WIN' ? 'high-confidence' : 'low-confidence';
+                        const statusText = p.status === 'WIN' ? '✅ WIN' : '❌ LOSS';
+                        const statusBadge = p.status === 'WIN' ? 'high' : 'low';
                         
-                        <div class="odds-display">
-                            <div class="odd-box">
-                                <div class="odd-label">Home Win</div>
-                                <div class="odd-value">${match.odds.home || '-'}</div>
-                            </div>
-                            <div class="odd-box">
-                                <div class="odd-label">Draw</div>
-                                <div class="odd-value">${match.odds.draw || '-'}</div>
-                            </div>
-                            <div class="odd-box">
-                                <div class="odd-label">Away Win</div>
-                                <div class="odd-value">${match.odds.away || '-'}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="predictions-section">
-                            <div class="predictions-title">Predictions (${match.predictions.length})</div>
-                            ${match.predictions.map(p => `
-                                <div class="prediction-item ${p.confidence === 'High' ? 'high-confidence' : p.confidence === 'Medium' ? 'medium-confidence' : 'low-confidence'}">
-                                    <div class="prediction-info">
-                                        <div class="prediction-rule">${p.rule}</div>
-                                        <div class="prediction-market">${p.market}</div>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div class="prediction-odds">${p.odds}</div>
-                                        <div class="prediction-confidence confidence-${p.confidence === 'High' ? 'high' : p.confidence === 'Medium' ? 'medium' : 'low'}">
-                                            ${p.confidence}
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                `;
+                        html += '<div class="prediction-item ' + statusClass + '" style="margin-bottom: 8px;">';
+                        html += '<div class="prediction-info">';
+                        html += '<div class="prediction-rule">' + p.rule + '</div>';
+                        html += '<div class="prediction-market">' + p.market + ' • Odds: ' + p.odds + '</div>';
+                        html += '</div>';
+                        html += '<div class="prediction-confidence confidence-' + statusBadge + '">' + statusText + '</div>';
+                        html += '</div>';
+                    });
+                    
+                    html += '</div>';
+                }
+                
+                html += '</div>';
             });
             
             container.innerHTML = html;
@@ -450,19 +423,17 @@ HTML_TEMPLATE = """
             
             if (!data.success || !data.rules) return;
             
-            container.innerHTML = data.rules.map(rule => `
-                <div class="rule-card">
-                    <div class="rule-name">${rule.name}</div>
-                    <div class="rule-desc">${rule.description}</div>
-                    <div class="rule-market">${rule.market}</div>
-                </div>
-            `).join('');
+            container.innerHTML = data.rules.map(rule => 
+                '<div class="rule-card">' +
+                '<div class="rule-name">' + rule.name + '</div>' +
+                '<div class="rule-desc">' + rule.description + '</div>' +
+                '<div class="rule-market">' + rule.market + '</div>' +
+                '</div>'
+            ).join('');
         }
         
-        // Load data on page load
         loadData();
-        
-        // Auto-refresh every 60 seconds
+        loadPreviousMatches();
         setInterval(loadData, 60000);
     </script>
 </body>
@@ -544,6 +515,26 @@ def get_rules():
 def health():
     """Health check"""
     return jsonify({"status": "healthy", "service": "football-predictions"})
+
+@app.route('/api/previous-matches', methods=['GET'])
+def get_previous_matches():
+    """Get previous matches with results"""
+    from real_matches import get_previous_matches
+    matches = get_previous_matches()
+    
+    total = len(matches)
+    total_predictions = sum(len(m.get('predictions', [])) for m in matches)
+    wins = sum(1 for m in matches for p in m.get('predictions', []) if p.get('status') == 'WIN')
+    win_rate = (wins / total_predictions * 100) if total_predictions > 0 else 0
+    
+    return jsonify({
+        "success": True,
+        "count": total,
+        "matches": matches,
+        "total_predictions": total_predictions,
+        "wins": wins,
+        "win_rate": win_rate
+    })
 
 if __name__ == '__main__':
     print("🚀 Football Prediction Website Running...")
