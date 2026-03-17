@@ -1,0 +1,171 @@
+{
+  "date": "2026-03-16T07:18:22.229492",
+  "total_matches": 50,
+  "total_predictions": 18,
+  "win_rate": 66.66666666666666,
+  "total_profit": 35.099999999999994,
+  "roi": 19.499999999999996,
+  "by_rule": {
+    "Rule 5": {
+      "total": 10,
+      "wins": 6,
+      "profit": 12.799999999999999
+    },
+    "Rule 3": {
+      "total": 6,
+      "wins": 4,
+      "profit": 17.4
+    },
+    "Rule 1": {
+      "total": 2,
+      "wins": 2,
+      "profit": 4.9
+    }
+  },
+  "predictions": [
+    {
+      "match": "Liverpool vs Chelsea",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 1.76,
+      "result": "WIN",
+      "profit": 7.6
+    },
+    {
+      "match": "Newcastle vs Everton",
+      "rule": "Rule 3",
+      "market": "Home/Draw (1X)",
+      "odds": 1.9,
+      "result": "WIN",
+      "profit": 9.0
+    },
+    {
+      "match": "Bayern vs Everton",
+      "rule": "Rule 1",
+      "market": "Home Win",
+      "odds": 1.28,
+      "result": "WIN",
+      "profit": 2.8000000000000003
+    },
+    {
+      "match": "Bayern vs Newcastle",
+      "rule": "Rule 1",
+      "market": "Home Win",
+      "odds": 1.21,
+      "result": "WIN",
+      "profit": 2.0999999999999996
+    },
+    {
+      "match": "Bayern vs Newcastle",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 1.21,
+      "result": "LOSS",
+      "profit": -10
+    },
+    {
+      "match": "Arsenal vs Everton",
+      "rule": "Rule 3",
+      "market": "Home/Draw (1X)",
+      "odds": 1.98,
+      "result": "LOSS",
+      "profit": -10
+    },
+    {
+      "match": "Wolves vs Man City",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 2.5,
+      "result": "LOSS",
+      "profit": -10
+    },
+    {
+      "match": "Liverpool vs Fulham",
+      "rule": "Rule 3",
+      "market": "Home/Draw (1X)",
+      "odds": 1.93,
+      "result": "WIN",
+      "profit": 9.299999999999999
+    },
+    {
+      "match": "Liverpool vs Fulham",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 1.93,
+      "result": "WIN",
+      "profit": 9.299999999999999
+    },
+    {
+      "match": "Arsenal vs Newcastle",
+      "rule": "Rule 3",
+      "market": "Home/Draw (1X)",
+      "odds": 1.97,
+      "result": "WIN",
+      "profit": 9.7
+    },
+    {
+      "match": "Liverpool vs Aston Villa",
+      "rule": "Rule 3",
+      "market": "Home/Draw (1X)",
+      "odds": 1.94,
+      "result": "WIN",
+      "profit": 9.399999999999999
+    },
+    {
+      "match": "Aston Villa vs Real Madrid",
+      "rule": "Rule 3",
+      "market": "Home/Draw (1X)",
+      "odds": 1.93,
+      "result": "LOSS",
+      "profit": -10
+    },
+    {
+      "match": "Newcastle vs Man City",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 1.84,
+      "result": "LOSS",
+      "profit": -10
+    },
+    {
+      "match": "Tottenham vs Fulham",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 2.1,
+      "result": "WIN",
+      "profit": 11.0
+    },
+    {
+      "match": "Man City vs Real Madrid",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 1.4,
+      "result": "WIN",
+      "profit": 3.999999999999999
+    },
+    {
+      "match": "Real Madrid vs Liverpool",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 1.45,
+      "result": "LOSS",
+      "profit": -10
+    },
+    {
+      "match": "Liverpool vs Real Madrid",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 1.76,
+      "result": "WIN",
+      "profit": 7.6
+    },
+    {
+      "match": "Tottenham vs Aston Villa",
+      "rule": "Rule 5",
+      "market": "1st Half Under 1.5",
+      "odds": 2.33,
+      "result": "WIN",
+      "profit": 13.3
+    }
+  ]
+}

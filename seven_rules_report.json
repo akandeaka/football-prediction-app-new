@@ -1,0 +1,30 @@
+{
+  "rule_stats": {
+    "Rule 5": {
+      "total": 187,
+      "wins": 152,
+      "profit": 2726.8,
+      "market": "1st Half Under 1.5"
+    },
+    "Rule 1": {
+      "total": 12,
+      "wins": 7,
+      "profit": -32.8,
+      "market": "Home Win"
+    },
+    "Rule 3": {
+      "total": 37,
+      "wins": 30,
+      "profit": 214.39999999999998,
+      "market": "Home/Draw (1X)"
+    },
+    "Rule 7": {
+      "total": 13,
+      "wins": 11,
+      "profit": 61.7,
+      "market": "Over 1.5 Goals"
+    }
+  },
+  "win_rate": 80.32128514056225,
+  "total_profit": 2970.1
+}
