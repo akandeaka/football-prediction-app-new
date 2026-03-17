@@ -362,7 +362,7 @@ HTML_TEMPLATE = """
                 displayRules(rules);
                 
             } catch (error) {
-                console.error('Error loading data:', error);
+                console.error('Error loading ', error);
                 document.getElementById('matchesContainer').innerHTML = `
                     <div class="no-predictions">
                         ⚠️ Error loading predictions. Please try again later.
@@ -475,33 +475,15 @@ def home():
 
 @app.route('/api/predictions', methods=['GET'])
 def get_predictions():
-    """Get all predictions - Uses Live API for daily matches"""
-    from live_api import LiveAPI
-    
-    # Try to get live fixtures from API first
-    api = LiveAPI()
-    success, _ = api.test_connection()
-    
-    if success:
-        fixtures = api.get_fixtures(days=7)
-        if fixtures:
-            formatted_fixtures = api.format_for_engine(fixtures)
-        else:
-            # Fallback to manual matches
-            from real_matches import get_real_fixtures
-            formatted_fixtures = get_real_fixtures()
-    else:
-        # Fallback to manual matches if API not configured
-        from real_matches import get_real_fixtures
-        formatted_fixtures = get_real_fixtures()
-    
+    """Get all predictions"""
+    fixtures = get_real_fixtures()
     engine = FinalPredictionEngine()
     all_predictions = []
     
-    for f in formatted_fixtures:
+    for f in fixtures:
         match_data = {
-            'name': f.get('name', f"{f.get('home', 'Home')} vs {f.get('away', 'Away')}"),
-            'odds': f.get('odds', {'home': 2.0, 'draw': 3.5, 'away': 3.5}),
+            'name': f"{f['home']} vs {f['away']}",
+            'odds': f['odds'],
             'team_stats': f.get('team_stats', {}),
             'h2h_stats': f.get('h2h_stats', {}),
             'league_info': f.get('league_info', {}),
@@ -519,8 +501,6 @@ def get_predictions():
         "count": len(all_predictions),
         "predictions": all_predictions
     })
-    
-    
 
 @app.route('/api/stats', methods=['GET'])
 def get_stats():
