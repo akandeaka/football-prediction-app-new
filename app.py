@@ -72,7 +72,7 @@ h+='</div></div>';});
 }else{h='<div class="none">No predictions found</div>';}
 document.getElementById('mc').innerHTML=h;
 document.getElementById('rg').innerHTML=r.rules.map(x=>'<div class="rule"><strong>'+x.name+'</strong><br><small>'+x.description+'</small><br><span style="color:#1a73e8">'+x.market+'</span></div>').join('');
-}catch(e){console.error(e);document.getElementById('mc').innerHTML='<div class="none">Error loading data</div>';}
+}catch(e){document.getElementById('mc').innerHTML='<div class="none">Error loading data</div>';}
 }
 load();
 setInterval(load,60000);
