@@ -27,19 +27,34 @@ class LiveAPI:
             return []
     
     def format_for_engine(self, fixtures):
-        """Convert API response to engine format"""
-        formatted = []
-        for match in fixtures:
-            formatted.append({
-                'name': f"{match['homeTeam']['name']} vs {match['awayTeam']['name']}",
-                'odds': self._extract_odds(match),
-                'team_stats': {'away_over_1_5_last_10': 7},  # Need historical data
-                'h2h_stats': {'total_matches': 10, 'ht_under_1_5_count': 3, 'draw_count': 4},
-                'league_info': {'is_low_scoring': False, 'draw_probability': 45},
-                'date': match.get('utcDate', ''),
-                'league': match.get('competition', {}).get('name', 'Unknown')
-            })
-        return formatted
+    """Convert API response to engine format"""
+    formatted = []
+    for match in fixtures:
+        # Extract odds (simplified - API may not always have odds)
+        odds = self._extract_odds(match)
+        
+        formatted.append({
+            'name': f"{match['homeTeam']['name']} vs {match['awayTeam']['name']}",
+            'odds': odds,
+            'team_stats': {
+                'away_over_1_5_last_10': 7  # Default value (need historical data)
+            },
+            'h2h_stats': {
+                'total_matches': 10,
+                'ht_under_1_5_count': 3,
+                'draw_count': 4
+            },
+            'league_info': {
+                'is_low_scoring': False,
+                'draw_probability': 45
+            },
+            'date': match.get('utcDate', ''),
+            'league': match.get('competition', {}).get('name', 'Unknown')
+        })
+    return formatted
+        
+        
+        
     
     def _extract_odds(self, match):
         """Extract odds from match data"""
